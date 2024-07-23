@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const morgan = require('morgan')
 const path = require('path')
+const session = require('express-session')
 
 const app = express()
 
@@ -22,13 +23,20 @@ mongoose.connection.on('connected', () => {
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
 
 // LINK PUBLIC DIRECTORY
 app.use(express.static(path.join(__dirname, 'public')))
 
 // ROUTES
 app.get('/', async (req, res) => {
-  res.render('index.ejs')
+  res.render('index.ejs', {
+    user: req.session.user
+  })
 })
 
 // AUTH ROUTER
