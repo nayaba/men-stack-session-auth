@@ -23,11 +23,13 @@ mongoose.connection.on('connected', () => {
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}))
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+)
 
 // LINK PUBLIC DIRECTORY
 app.use(express.static(path.join(__dirname, 'public')))
@@ -35,8 +37,13 @@ app.use(express.static(path.join(__dirname, 'public')))
 // ROUTES
 app.get('/', async (req, res) => {
   res.render('index.ejs', {
-    user: req.session.user
+    user: req.session.user,
   })
+})
+app.get('/vip-lounge', (req, res) => {
+  req.session.user
+    ? res.send(`Welcome to the party ${req.session.user.username}`)
+    : res.send('Sorry, no guests allowed.')
 })
 
 // AUTH ROUTER
