@@ -5,6 +5,7 @@ const router = express.Router()
 
 const User = require('../models/user.js')
 
+// SIGN UP 
 router.get('/sign-up', (req, res) => {
     res.render('auth/sign-up.ejs')
 })
@@ -25,6 +26,11 @@ router.post('/sign-up', async (req, res) => {
 
     const user = await User.create(req.body)
     res.send(`Thanks for signing up ${user.username}`)
+})
+
+// SIGN IN
+router.get('/sign-in', (req, res) => {
+    res.render('auth/sign-in.ejs')
 })
 
 router.post('/sign-in', async (req, res) => {
