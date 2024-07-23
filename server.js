@@ -9,6 +9,9 @@ const app = express()
 // MONGOOSE DATABASE CONNECTION
 const port = process.env.PORT ? process.env.PORT : '3000'
 
+// CONTROLLERS
+const authCtrl = require('./controllers/auth.js')
+
 mongoose.connect(process.env.MONGODB_URI)
 mongoose.connection.on('connected', () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name} 👮🏻‍♀️`)
@@ -23,6 +26,9 @@ app.use(morgan('dev'))
 app.get('/', async(req, res) => {
     res.render('index.ejs')
 })
+
+// AUTH ROUTER
+app.use('/auth', authCtrl)
 
 
 // START SERVER & LISTEN FOR INCOMING REQUESTS ON PORT 3000
