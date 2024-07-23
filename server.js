@@ -19,6 +19,12 @@ app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
 
+// ROUTES
+app.get('/', async(req, res) => {
+    res.render('index.ejs')
+})
+
+
 // START SERVER & LISTEN FOR INCOMING REQUESTS ON PORT 3000
 app.listen(port, () => {
     console.log(`The express app is ready on port ${port}!`)
